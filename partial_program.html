@@ -1,0 +1,28 @@
+
+
+{{define "program_list_item"}}
+    {{range .}}
+        <li>
+            <a href="/program/{{.ID}}" hx-trigger="click" hx-get="/program/{{.ID}}" hx-swap="innerHTML" hx-target="#programepisodes">{{.Name}}</a>
+            <span>{{.Description}}</span>
+        </li>
+    {{end}}
+{{end}}
+
+
+{{define "program_episodes"}}
+    {{range .}}
+        <li>
+            <h2>{{.Title}}</h2>
+            <p>{{.Description}}</p>
+            <div>
+                <a class="download" href="{{.DownloadPodfile.URL}}">⭳</a>
+                <audio controls>
+                    <source src="{{.ListenPodfile.URL}}"/>
+                </audio>
+            </div>
+        </li>
+    {{end}}
+{{end}}
+
+

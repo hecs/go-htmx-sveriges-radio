@@ -1,0 +1,42 @@
+body {
+    font: 16px system-ui;
+    background-color: Canvas;
+    color: CanvasText;
+    color-scheme: light dark;
+}
+main {
+    max-width: 800px;
+    margin: 0 auto;
+} 
+
+ul {
+    color: rebeccapurple
+}
+
+#programList li {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 10px;
+}
+
+#programepisodes div {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+audio {
+    flex:1;
+}
+
+.download {
+    font-weight: 700;
+    font-size: 20px;
+    padding: 8px;
+    border-radius: 99px;
+}
+
+.download:hover {
+    background-color: currentColor;
+    text-shadow: 0 0 white;
+}
