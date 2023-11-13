@@ -22,7 +22,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	http.HandleFunc("/audio", programAudioHandler)
 	http.HandleFunc("/program/", programHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
@@ -50,16 +49,6 @@ func searchHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-}
-
-func programAudioHandler(w http.ResponseWriter, r *http.Request) {
-	err := tmpl.ExecuteTemplate(w, "program_audio", nil)
-	if err != nil {
-		fmt.Println("Error parsing template program_audio:", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
 }
 
 func programHandler(w http.ResponseWriter, r *http.Request) {
