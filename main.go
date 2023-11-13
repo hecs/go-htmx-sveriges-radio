@@ -41,7 +41,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func searchHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("searchQuery")
 	filtered := filterPrograms(programs.Programs, query)
-	fmt.Printf("#### filter length\n%s\n", len(filtered))
 
 	err := tmpl.ExecuteTemplate(w, "program_list_item", filtered)
 	if err != nil {
