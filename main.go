@@ -1,53 +1,38 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"net/http"
 	"os"
 	"strings"
 )
 
 var programs, programsErr = fetchPrograms()
-var tmpl, templateErr = template.ParseFiles("programs.html", "partial_program.html")
 
 func main() {
 	if programsErr != nil {
 		fmt.Println("Error fetching data:", programsErr)
 		os.Exit(1)
 	}
-	if templateErr != nil {
-		fmt.Println("Error parsing templates:", templateErr)
-		os.Exit(1)
-	}
 
 	http.HandleFunc("/program/", programHandler)
 	http.HandleFunc("/search", searchHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-	http.HandleFunc("/", handler)
-	http.ListenAndServe(":8080", nil)
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	err := tmpl.ExecuteTemplate(w, "programs.html", programs)
-	if err != nil {
-		fmt.Println("Error rendering template:", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		index(programs.Programs, programs.Copyright).Render(context.Background(), w)
+	})
+	port := ":8080"
+	println("Listening on port http://localhost" + port)
+	http.ListenAndServe(port, nil)
 }
 
 func searchHandler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("searchQuery")
 	filtered := filterPrograms(programs.Programs, query)
 
-	err := tmpl.ExecuteTemplate(w, "program_list_item", filtered)
-	if err != nil {
-		fmt.Println("Error parsing template program_list_item:", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	program_list_item(filtered).Render(context.Background(), w)
 }
 
 func programHandler(w http.ResponseWriter, r *http.Request) {
@@ -62,13 +47,7 @@ func programHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, episodesErr.Error(), http.StatusInternalServerError)
 			return
 		}
-		err := tmpl.ExecuteTemplate(w, "program_episodes", episodes)
-		if err != nil {
-			fmt.Println("Error parsing template:", err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		return
+		program_episodes(episodes).Render(context.Background(), w)
 	} else {
 		fmt.Println("Couldn't parse program url id:", parts)
 		http.NotFound(w, r)

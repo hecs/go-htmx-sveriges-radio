@@ -1,0 +1,61 @@
+package main
+
+import "strconv"
+
+const title ="Sveriges Radio player in HTMX"
+
+func getProgramURL(ID int) string {
+	return "/program/" + strconv.Itoa(ID)
+}
+
+
+templ index(programs []Program, copyright string) {
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>{title}</title>
+        <link rel="stylesheet" href="/static/style.css"></link>
+        <script src="https://unpkg.com/htmx.org@1.9.8" integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <main>
+            <h1>{title}</h1>
+
+            Filter programs <input type="text" name="searchQuery" hx-trigger="keyup delay:500ms" hx-get="/search" hx-swap="innerHTML" hx-target="#programList"/>
+            <ul id="programList">
+                @program_list_item(programs)
+            </ul>
+            <ul id="programepisodes"></ul>
+            <footer>{copyright}</footer>
+        </main>
+    </body>
+    </html>
+}
+
+templ program_list_item(programs []Program) {
+    for _, p := range programs {
+        
+        <li>
+            <a href={templ.URL(getProgramURL(p.ID))} hx-trigger="click" hx-get={getProgramURL(p.ID)} hx-swap="innerHTML" hx-target="#programepisodes">{p.Name}</a>
+            <span>{p.Description}</span>
+        </li>
+    }
+}
+
+templ program_episodes(episodes []Episode) {
+    for _, item := range episodes {
+        <li>
+            <h2>{item.Title}</h2>
+            <p>{item.Description}</p>
+            <div>
+                <a class="download" href={templ.URL(item.DownloadPodfile.URL)}>⭳</a>
+                <audio controls>
+                    <source src={string(item.ListenPodfile.URL)}/>
+                </audio>
+            </div>
+        </li>
+    }
+}
+
