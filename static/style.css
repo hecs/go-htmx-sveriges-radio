@@ -10,7 +10,8 @@ main {
 } 
 
 ul {
-    color: rebeccapurple
+    color: rebeccapurple;
+    padding-left: 0;
 }
 
 #programList li {
