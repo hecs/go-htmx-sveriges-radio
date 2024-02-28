@@ -6,29 +6,24 @@ import (
 	"strings"
 )
 
-func fetchPrograms() (*PageData, error) {
-	resp, err := http.Get("http://api.sr.se/api/v2/programs?format=json&size=20&programcategoryid=14")
+func fetch(url string, target interface{}) error {
+	resp, err := http.Get(url)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer resp.Body.Close()
+	return json.NewDecoder(resp.Body).Decode(target)
+}
 
+func fetchPrograms() (*PageData, error) {
 	pageData := PageData{}
-	err = json.NewDecoder(resp.Body).Decode(&pageData)
-
+	err := fetch("http://api.sr.se/api/v2/programs?format=json&size=20&programcategoryid=14", &pageData)
 	return &pageData, err
 }
 
 func fetchEpisodes(programId string) ([]Episode, error) {
-	resp, err := http.Get("http://api.sr.se/api/v2/episodes/index?programid=" + programId + "&format=json&audioquality=hi")
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
 	episodesResponse := EpisodesResponse{}
-	err = json.NewDecoder(resp.Body).Decode(&episodesResponse)
-
+	err := fetch("http://api.sr.se/api/v2/episodes/index?programid="+programId+"&format=json&audioquality=hi", &episodesResponse)
 	return episodesResponse.Episodes, err
 }
 
@@ -44,6 +39,5 @@ func filterPrograms(programs []Program, query string) []Program {
 			}
 		}
 	}
-
 	return filteredPrograms
 }

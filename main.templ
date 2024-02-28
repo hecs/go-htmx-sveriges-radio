@@ -21,8 +21,8 @@ templ index(programs []Program, copyright string) {
 		<body>
 			<main>
 				<h1>{ title }</h1>
-				Filter programs <input type="text" name="searchQuery" hx-trigger="keyup delay:500ms" hx-get="/search" hx-swap="innerHTML" hx-target="#programList"/>
-				<ul id="programList">
+				Filter programs <input type="text" name="searchQuery" hx-trigger="keyup delay:500ms" hx-get="/search" hx-swap="innerHTML transition:true" hx-target="#programList"/>
+				<ul id="programList" class="transition-slide-it">
 					@program_list_item(programs)
 				</ul>
 				<ul id="programepisodes"></ul>
@@ -41,7 +41,7 @@ templ index(programs []Program, copyright string) {
 templ program_list_item(programs []Program) {
 	for _, p := range programs {
 		<li>
-			<a href={ templ.URL(getProgramURL(p.ID)) } hx-trigger="click" hx-get={ getProgramURL(p.ID) } hx-swap="innerHTML" hx-target="#programepisodes">{ p.Name }</a>
+			<a href={ templ.URL(getProgramURL(p.ID)) } hx-trigger="click" hx-get={ getProgramURL(p.ID) } hx-swap="innerHTML transition:true" hx-target="#programepisodes">{ p.Name }</a>
 			<span>{ p.Description }</span>
 		</li>
 	}
@@ -50,13 +50,15 @@ templ program_list_item(programs []Program) {
 templ program_episodes(episodes []Episode) {
 	for _, item := range episodes {
 		<li>
-			<h2>{ item.Title }</h2>
-			<p>{ item.Description }</p>
 			<div>
-				<a class="download" href={ templ.URL(item.DownloadPodfile.URL) }>⭳</a>
-				<audio controls>
-					<source src={ string(item.ListenPodfile.URL) }/>
-				</audio>
+				<h2>{ item.Title }</h2>
+				<p>{ item.Description }</p>
+				<div>
+					<a class="download" href={ templ.URL(item.DownloadPodfile.URL) }>⭳</a>
+					<audio controls>
+						<source src={ string(item.ListenPodfile.URL) }/>
+					</audio>
+				</div>
 			</div>
 		</li>
 	}

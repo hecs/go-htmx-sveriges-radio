@@ -1,43 +1,82 @@
 body {
-    font: 16px system-ui;
-    background-color: Canvas;
-    color: CanvasText;
-    color-scheme: light dark;
+  font: 16px system-ui;
+  background-color: Canvas;
+  color: CanvasText;
+  color-scheme: light dark;
 }
 main {
-    max-width: 800px;
-    margin: 0 auto;
-} 
+  max-width: 800px;
+  margin: 0 auto;
+}
 
 ul {
-    color: rebeccapurple;
-    padding-left: 0;
+  color: rebeccapurple;
+  padding-left: 0;
 }
 
 #programList li {
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 10px;
 }
 
 #programepisodes div {
-    display: flex;
-    gap: 8px;
-    align-items: center;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 audio {
-    flex:1;
+  flex: 1;
 }
 
 .download {
-    font-weight: 700;
-    font-size: 20px;
-    padding: 8px;
-    border-radius: 99px;
+  font-weight: 700;
+  font-size: 20px;
+  padding: 8px;
+  border-radius: 99px;
 }
 
 .download:hover {
-    background-color: currentColor;
-    text-shadow: 0 0 white;
+  background-color: currentColor;
+  text-shadow: 0 0 white;
+}
+
+/* Transitions CSS */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-from-right {
+  from {
+    transform: translateX(90px);
+  }
+}
+@keyframes slide-to-left {
+  to {
+    transform: translateX(-90px);
+  }
+}
+
+/* define animations for the old and new content */
+::view-transition-old(slide-it) {
+  animation: 180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+    600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+}
+::view-transition-new(slide-it) {
+  animation: 420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+    600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+}
+
+/* tie the view transition to a given CSS class */
+.transition-slide-it {
+  view-transition-name: slide-it;
 }
