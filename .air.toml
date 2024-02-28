@@ -1,0 +1,5 @@
+[build]
+  bin = "./sr"
+  cmd = "templ generate && go build -o sr"
+  exclude_regex = [".*_templ.go"]
+  include_ext = ["go", "templ"]
