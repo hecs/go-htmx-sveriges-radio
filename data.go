@@ -27,16 +27,19 @@ func fetchEpisodes(programId string) ([]Episode, error) {
 	return episodesResponse.Episodes, err
 }
 
+func includes(s string, query string) bool {
+	return strings.Contains(strings.ToLower(s), query)
+}
+
 func filterPrograms(programs []Program, query string) []Program {
-	query = strings.ToLower(query)
-	var filteredPrograms []Program
 	if len(query) == 0 {
-		filteredPrograms = programs
-	} else {
-		for _, p := range programs {
-			if strings.Contains(strings.ToLower(p.Description), query) || strings.Contains(strings.ToLower(p.Name), query) {
-				filteredPrograms = append(filteredPrograms, p)
-			}
+		return programs
+	}
+	queryLow := strings.ToLower(query)
+	var filteredPrograms []Program
+	for _, p := range programs {
+		if includes(p.Description, queryLow) || includes(p.Name, queryLow) {
+			filteredPrograms = append(filteredPrograms, p)
 		}
 	}
 	return filteredPrograms

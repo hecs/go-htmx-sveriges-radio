@@ -19,7 +19,7 @@ templ index(programs []Program, copyright string) {
 			<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
 		</head>
 		<body>
-			<main>asasdasdasdasasdf
+			<main>
 				<h1>{ title }</h1>
 				Filter programs <input type="text" name="searchQuery" hx-trigger="keyup delay:500ms" hx-get="/search" hx-swap="innerHTML transition:true" hx-target="#programList"/>
 				<ul id="programList" class="transition-slide-it">
