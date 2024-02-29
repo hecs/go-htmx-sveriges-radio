@@ -8,7 +8,7 @@ func getProgramURL(ID int) string {
 	return "/program/" + strconv.Itoa(ID)
 }
 
-templ index(programs []Program, copyright string) {
+templ index(program_list_item templ.Component, program_episodes templ.Component, copyright string) {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -17,15 +17,18 @@ templ index(programs []Program, copyright string) {
 			<title>{ title }</title>
 			<link rel="stylesheet" href="/static/style.css"/>
 			<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+			<link rel="icon" href="data:;base64,iVBORw0KGgo="/>
 		</head>
 		<body>
 			<main>
 				<h1>{ title }</h1>
 				Filter programs <input type="text" name="searchQuery" hx-trigger="keyup delay:500ms" hx-get="/search" hx-swap="innerHTML transition:true" hx-target="#programList"/>
 				<ul id="programList" class="transition-slide-it">
-					@program_list_item(programs)
+					@program_list_item
 				</ul>
-				<ul id="programepisodes"></ul>
+				<ul id="programepisodes">
+					@program_episodes
+				</ul>
 				<footer>{ copyright }</footer>
 			</main>
 		</body>

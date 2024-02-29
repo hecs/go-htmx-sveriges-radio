@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -23,7 +24,7 @@ func fetchPrograms() (*PageData, error) {
 
 func fetchEpisodes(programId string) ([]Episode, error) {
 	episodesResponse := EpisodesResponse{}
-	err := fetch("http://api.sr.se/api/v2/episodes/index?programid="+programId+"&format=json&audioquality=hi", &episodesResponse)
+	err := fetch("http://api.sr.se/api/v2/episodes?programid="+programId+"&format=json&audioquality=hi", &episodesResponse)
 	return episodesResponse.Episodes, err
 }
 
@@ -43,4 +44,17 @@ func filterPrograms(programs []Program, query string) []Program {
 		}
 	}
 	return filteredPrograms
+}
+
+func getProgram(programs []Program, programId string) Program {
+	id, err := strconv.Atoi(programId)
+	if err != nil {
+		return Program{}
+	}
+	for _, p := range programs {
+		if p.ID == id {
+			return p
+		}
+	}
+	return Program{}
 }
