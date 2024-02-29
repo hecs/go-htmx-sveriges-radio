@@ -4,6 +4,7 @@ body {
   color: CanvasText;
   color-scheme: light dark;
 }
+
 main {
   max-width: 800px;
   margin: 0 auto;
@@ -38,8 +39,8 @@ audio {
 }
 
 .download:hover {
-  background-color: currentColor;
-  text-shadow: 0 0 white;
+  background-color: rebeccapurple;
+  color: white;
 }
 
 /* Transitions CSS */
