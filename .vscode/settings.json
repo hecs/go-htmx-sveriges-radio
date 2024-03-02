@@ -4,5 +4,6 @@
         "HTMX",
         "Sveriges",
         "templ"
-    ]
+    ],
+    "editor.formatOnSave": true,
 }
