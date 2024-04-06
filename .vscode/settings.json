@@ -6,4 +6,7 @@
         "templ"
     ],
     "editor.formatOnSave": true,
+    "[css]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
 }
