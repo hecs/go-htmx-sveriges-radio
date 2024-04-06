@@ -1,8 +1,5 @@
 body {
   font: 16px system-ui;
-  background-color: Canvas;
-  color: CanvasText;
-  color-scheme: light dark;
 }
 
 main {
@@ -11,19 +8,25 @@ main {
 }
 
 ul {
-  color: rebeccapurple;
   padding-left: 0;
 }
 
 #programList li {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  gap: 10px;
+  gap: 1rem;
+}
+
+#programepisodes {
+  display: flex;
+  gap: 4rem;
+  flex-direction: column;
+  list-style-type: symbols;
 }
 
 #programepisodes div {
   display: flex;
-  gap: 8px;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -33,15 +36,19 @@ audio {
 
 .download {
   font-weight: 700;
-  font-size: 20px;
-  padding: 8px;
+  font-size: 1.25rem;
+  padding: 1rem;
   border-radius: 99px;
 }
 
 .download:hover {
-  background-color: rebeccapurple;
-  color: white;
+  backdrop-filter: brightness(4);
 }
+
+footer {
+  margin: 2rem 0;
+}
+
 
 /* Transitions CSS */
 

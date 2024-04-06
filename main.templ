@@ -14,6 +14,7 @@ templ index(program_list_item templ.Component, program_episodes templ.Component,
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta name="color-scheme" content="light dark"/>
 			<title>{ title }</title>
 			<link rel="stylesheet" href="/static/style.css"/>
 			<script src="https://unpkg.com/htmx.org@2.0.0-alpha2/dist/htmx.min.js"></script>
@@ -21,7 +22,7 @@ templ index(program_list_item templ.Component, program_episodes templ.Component,
 		</head>
 		<body>
 			<main>
-				<h1>{ title }</h1>
+				<h1>{ title } <button onclick="toggleScheme()">🌙</button></h1>
 				Filter programs 
 				<input
 					type="text"
@@ -41,9 +42,11 @@ templ index(program_list_item templ.Component, program_episodes templ.Component,
 			</main>
 		</body>
 		<script>
-            document.body.addEventListener("htmx:load", e => {
-                console.info("htmx:load",e.detail.elt);
-            })
+			const schemeEl = document.head.querySelector('[name="color-scheme"]');
+			const toggleScheme = () => schemeEl.content = (schemeEl.content.includes(" ") ? window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light" : schemeEl.content) === "dark" ? "light" : "dark";
+			document.addEventListener('htmx:configRequest', (evt) => {
+				evt.detail.headers['x-is-dark-mode'] = schemeEl.content === "dark"; // or 'false' depending on your dark mode status
+			});
 
         </script>
 	</html>
@@ -68,15 +71,11 @@ templ program_list_item(programs []Program) {
 templ program_episodes(episodes []Episode) {
 	for _, item := range episodes {
 		<li>
+			<h2>{ item.Title }</h2>
+			<p>{ item.Description }</p>
 			<div>
-				<h2>{ item.Title }</h2>
-				<p>{ item.Description }</p>
-				<div>
-					<a class="download" href={ templ.URL(item.DownloadPodfile.URL) }>⬇</a>
-					<audio controls>
-						<source src={ string(item.ListenPodfile.URL) }/>
-					</audio>
-				</div>
+				<audio controls><source src={ string(item.ListenPodfile.URL) }/></audio>
+				<a class="download" href={ templ.URL(item.DownloadPodfile.URL) }>⬇</a>
 			</div>
 		</li>
 	}
