@@ -59,7 +59,7 @@ func HTML(HandleFunc http.HandlerFunc) http.HandlerFunc {
 		isDark := r.Header.Get("x-is-dark-mode")
 		w.Header().Set("x-is-dark-mode", string(isDark))
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		w.Header().Set("Content-Security-Policy", "default-src 'none'; script-src 'self' 'unsafe-inline' unpkg.com; media-src http://sverigesradio.se *.sr.se; style-src 'self' 'unsafe-inline'; image-src 'self' data:; connect-src 'self'; frame-src 'self'; frame-ancestors 'self'; block-all-mixed-content; upgrade-insecure-requests;")
+		w.Header().Set("Content-Security-Policy", "default-src 'none'; script-src 'self' 'unsafe-inline' unpkg.com; media-src http://sverigesradio.se *.sr.se; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-src 'self'; frame-ancestors 'self'; block-all-mixed-content; upgrade-insecure-requests;")
 		HandleFunc(w, r)
 	}
 }
